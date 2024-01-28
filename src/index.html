@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaraHa Messaging App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input, textarea, button {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SaraHa Messaging App</h1>
+
+  <h2>Send a Message</h2>
+  <textarea id="messageInput" placeholder="Type your message..."></textarea>
+  <button onclick="sendMessage()">Send Message</button>
+
+  <h2>Delete a Message</h2>
+  <input type="text" id="deleteMessageId" placeholder="Message ID">
+  <button onclick="deleteMessage()">Delete Message</button>
+
+  <script>
+    async function sendMessage() {
+      const message = document.getElementById('messageInput').value;
+      const recipientId = prompt('Enter the recipient user ID:');
+
+      const response = await fetch(`http://localhost:3000/message/${recipientId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'yasmin--eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWE5NDhiOGQ3MzA5YjhlMTk4YTI2ZTUiLCJlbWFpbCI6Inlhc28ueWFzc2VyMDU1NUBnbWFpbC5jb20iLCJpYXQiOjE3MDU1OTMwMzAsImV4cCI6MTcwNTU5NjYzMH0.NZz0oKy0Im9yZ5yBPo2mZxd3-IUXD0u7AHQV1jYLKVk', // Replace with your actual token
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+      alert(data.message);
+    }
+
+    async function deleteMessage() {
+      const messageId = document.getElementById('deleteMessageId').value;
+
+      const response = await fetch(`http://localhost:3000/message/${messageId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your actual token
+        },
+      });
+
+      const data = await response.json();
+      alert(data.message);
+    }
+  </script>
+
+</body>
+</html>
